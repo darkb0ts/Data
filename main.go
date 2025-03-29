@@ -7,6 +7,11 @@ import (
 )
 
 func main() {
-	arr := array.NewArray(10)
-	fmt.Println("Array created with capacity:", arr)
+	arr := []int{1, 2, 3, 4, 5}
+	value,value1, err := array.Max(arr)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("Array:", value, value1, err)
 }
