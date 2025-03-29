@@ -13,5 +13,12 @@ func main() {
 		fmt.Println("Error:", err)
 		return
 	}
+	value7,err := array.Random(20,-20,10,true)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	} 
+	fmt.Println("Random:", value7, err)
 	fmt.Println("Array:", value, value1, err)
 }
+

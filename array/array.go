@@ -2,6 +2,8 @@ package array
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 type Array struct {
@@ -249,4 +251,112 @@ func Sum(arr []int) (int,error){
 		sum += arr[i]
 	}
 	return sum,nil 
+}
+
+func ArraySlice(arr []int,start,end int) ([]int,error){
+	if start < 0 || end > len(arr) || start > end {
+		return nil, fmt.Errorf("index out of range: %d", start)
+	}
+	return arr[start:end], nil
+}
+
+
+func Queue(arr []int) ([]int,error){
+	queue := make([]int, len(arr))
+	copy(queue, arr)
+	return queue,nil 
+}
+
+func Stack(arr []int) ([]int,error){
+	stack := make([]int, len(arr))
+	copy(stack, arr)
+	return stack,nil
+}
+
+func Pop(arr []int) ([]int,error){
+	if len(arr)==0{
+		return nil, fmt.Errorf("array is empty")
+	}
+	arr  = arr[:len(arr)-1]
+	return arr,nil
+}
+
+func Swap(arr []int,index1,index2 int) ([]int,error){
+	if index1 < 0 || index2 > len(arr) || index1 > index2 {
+		return nil, fmt.Errorf("index out of range: %d", index1)
+	}
+	arr[index1], arr[index2] = arr[index2], arr[index1]
+	return arr, nil
+}
+
+func LSearch(arr []int,target int) (int,error){
+	for index,value := range arr{ 
+		if value == target{
+		return index, nil
+	}
+	}
+	return -1, fmt.Errorf("value not found")
+}
+
+func BSearch(arr []int,target int) (int,error){
+	low,high := 0,len(arr)-1
+	for low <= high {
+		mid := (low + high) / 2
+		if arr[mid] == target {
+			return mid, nil
+		}
+		if arr[mid] < target {
+			low = mid + 1
+		} else {
+			high = mid - 1
+		}
+	}
+	return -1, fmt.Errorf("value not found")
+}
+
+func Reverse(arr []int) ([]int,error){
+	for i,j :=0,len(arr)-1;i<j;i,j = i+1,j-1{
+		arr[i],arr[j] = arr[j],arr[i]
+	}
+	return arr,nil
+}
+
+
+func Random(size, min, max int, noRepeat ...bool) ([]int, error) {
+	if size <= 0 {
+		return nil, fmt.Errorf("size must be positive: %d", size)
+	}
+	if min > max {
+		return nil, fmt.Errorf("min must be less than or equal to max: min=%d, max=%d", min, max)
+	}
+
+	rand.Seed(time.Now().UnixNano())
+	arr := make([]int, size)
+
+	avoidDuplicates := false
+	if len(noRepeat) > 0 {
+		avoidDuplicates = noRepeat[0] 
+	}
+
+	if avoidDuplicates {
+		if size > (max - min + 1) {
+			return nil, fmt.Errorf("size is too large for unique values in the given range")
+		}
+		unique := make(map[int]bool)
+		for i := 0; i < size; i++ {
+			for {
+				num := rand.Intn(max-min+1) + min
+				if !unique[num] {
+					arr[i] = num
+					unique[num] = true
+					break
+				}
+			}
+		}
+	} else {
+		for i := 0; i < size; i++ {
+			arr[i] = rand.Intn(max-min+1) + min
+		}
+	}
+	return arr, nil
 }
